@@ -1,6 +1,6 @@
 # Simple Slack Notify
 
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/edge/simple-slack-notify) ![GitHub Release Date](https://img.shields.io/github/release-date/edge/simple-slack-notify) ![License](https://img.shields.io/github/license/edge/simple-slack-notify) [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/mfn/simple-slack-notify) ![GitHub Release Date](https://img.shields.io/github/release-date/mfn/simple-slack-notify) ![License](https://img.shields.io/github/license/mfn/simple-slack-notify) [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com)
 
 Slack notification action that just works
 
@@ -18,7 +18,7 @@ The main features are:
 Be sure that you set the `SLACK_WEBHOOK_URL` environment variable, either in the job or in the step like this:
 
 ```yaml
-- uses: edge/simple-slack-notify@master
+- uses: mfn/simple-slack-notify@master
   env:
     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 ```
@@ -29,7 +29,7 @@ The simplest use would consist of relying on the webhook's defaults and simply p
 
 ```
 - name: Simple notification
-  uses: edge/simple-slack-notify@master
+  uses: mfn/simple-slack-notify@master
   with:
     text: 'This is the simplest notification'
 ```
@@ -38,7 +38,7 @@ Overriding the channel is sometimes needed, such as to separate out builds, depl
 
 ```
 - name: Channel specific notification
-  uses: edge/simple-slack-notify@master
+  uses: mfn/simple-slack-notify@master
   with:
     channel: '#alerts'
     text: 'Something is happening and someone should probably panic'
@@ -50,7 +50,7 @@ You can use `danger`, `warning`, `good`, or a hex code such as `#d90000`.
 
 ```
 - name: Panic inducing notification
-  uses: edge/simple-slack-notify@master
+  uses: mfn/simple-slack-notify@master
   with:
     channel: '#alerts'
     text: 'Something is happening and someone should probably panic'
@@ -61,7 +61,7 @@ Perhaps you also want to change the username?
 
 ```
 - name: Panic Bot notification
-  uses: edge/simple-slack-notify@master
+  uses: mfn/simple-slack-notify@master
   with:
     channel: '#alerts'
     username: 'Panic Bot'
@@ -73,7 +73,7 @@ The action also supports fields, but due to the limitations of GitHub actions on
 
 ```
 - name: Specifying what to panic about notification
-  uses: edge/simple-slack-notify@master
+  uses: mfn/simple-slack-notify@master
   with:
     channel: '#alerts'
     username: 'Panic Bot'
@@ -87,7 +87,7 @@ If there were multiple reasons to panic, you'd add more objects to the fields ar
 
 ```
 - name: Specifying what to panic about notification
-  uses: edge/simple-slack-notify@master
+  uses: mfn/simple-slack-notify@master
   with:
     channel: '#alerts'
     username: 'Panic Bot'
@@ -102,7 +102,7 @@ Did you notice that some JavaScript snook in? Input strings are evaluated as a J
 
 ```
 - name: Environment variable notification
-  uses: edge/simple-slack-notify@master
+  uses: mfn/simple-slack-notify@master
   with:
     channel: '#example'
     text: '${env.GITHUB_WORKFLOW} (${env.GITHUB_RUN_NUMBER}) has finished'
@@ -116,7 +116,7 @@ Now, each job has a status, which can be `success`, `failed`, or `cancelled`. Mo
 ```
 - name: Build notification
   if: always()
-  uses: edge/simple-slack-notify@master
+  uses: mfn/simple-slack-notify@master
   with:
     channel: '#builds'
     status: ${{ job.status }}
