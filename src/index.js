@@ -8,19 +8,18 @@
 //  Slack notification action that just works |__/
 // Copyright 2020 Adam K Dean <adamkdean@googlemail.com>
 
-const core = require('@actions/core')
-const { IncomingWebhook } = require('@slack/webhook')
+import * as core from '@actions/core'
 
 try {
   if (!process.env.SLACK_WEBHOOK_URL) {
     throw new Error('SLACK_WEBHOOK_URL is not set!')
   }
-  const slack = new IncomingWebhook(process.env.SLACK_WEBHOOK_URL)
 
-  /* eslint-disable no-eval */
   const disableEval = !!core.getInput('disable_eval')
-  const env = process.env // eslint-disable-line
-  const envsubst = (str) => (disableEval ? str : eval(`\`${str}\``))
+  // biome-ignore lint/correctness/noUnusedVariables: env is used inside eval() template literals
+  const env = process.env
+  // biome-ignore lint/security/noGlobalEval: eval is an intentional feature controlled by disable_eval input
+  const envsubst = str => (disableEval ? str : eval(`\`${str}\``))
 
   const channel = envsubst(core.getInput('channel'))
   const username = envsubst(core.getInput('username'))
@@ -55,8 +54,10 @@ try {
   }
 
   // Send the notification
-  ;(async () => {
-    await slack.send({
+  const response = await fetch(process.env.SLACK_WEBHOOK_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
       channel,
       username,
       attachments: [
@@ -68,7 +69,12 @@ try {
         }
       ]
     })
-  })()
+  })
+
+  if (!response.ok) {
+    const body = await response.text()
+    throw new Error(`Slack webhook error (${response.status}): ${body}`)
+  }
 } catch (error) {
   core.setFailed(error.message)
 }
