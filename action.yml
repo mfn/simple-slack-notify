@@ -1,10 +1,10 @@
 name: 'Simple Slack Notify'
-description: "Slack notification action that just works"
+description: 'Slack notification action that just works'
 branding:
   icon: 'message-circle'
   color: 'purple'
 runs:
-  using: 'node20'
+  using: 'node24'
   main: 'dist/index.js'
 inputs:
   channel:
